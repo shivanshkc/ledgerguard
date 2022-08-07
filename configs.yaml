@@ -1,0 +1,15 @@
+---
+application:
+  name: ledgerguard
+  version: 0.0.0
+
+http_server:
+  addr: 0.0.0.0:8080
+
+logger:
+  level: info
+
+mongo:
+  addr: mongodb://dev:dev@localhost:27017/?retryWrites=true&w=majority
+  database_name: ledgerguard
+  operation_timeout_sec: 60
