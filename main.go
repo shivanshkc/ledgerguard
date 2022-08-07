@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
+
+	"github.com/shivanshkc/ledgerguard/src/handlers"
+
 	"github.com/shivanshkc/ledgerguard/src/configs"
 	"github.com/shivanshkc/ledgerguard/src/logger"
 	"github.com/shivanshkc/ledgerguard/src/middlewares"
@@ -38,14 +41,18 @@ func handler() http.Handler {
 	router.Use(middlewares.CORS)
 
 	// Client-facing authentication API.
-	router.HandleFunc("/api/auth/{provider_id}", nil).Methods(http.MethodOptions, http.MethodGet)
+	router.HandleFunc("/api/auth/{provider_id}", handlers.AuthHandler).
+		Methods(http.MethodOptions, http.MethodGet)
 	// SSO-provider-facing callback API.
-	router.HandleFunc("/api/auth/{provider_id}/callback", nil).Methods(http.MethodOptions, http.MethodGet)
+	router.HandleFunc("/api/auth/{provider_id}/callback", handlers.AuthCallbackHandler).
+		Methods(http.MethodOptions, http.MethodGet)
 
 	// Get user API.
-	router.HandleFunc("/api/user", nil).Methods(http.MethodOptions, http.MethodGet)
+	router.HandleFunc("/api/user", handlers.GetUserHandler).
+		Methods(http.MethodOptions, http.MethodGet)
 	// Verify user API.
-	router.HandleFunc("/api/user", nil).Methods(http.MethodOptions, http.MethodHead)
+	router.HandleFunc("/api/user", handlers.VerifyUserHandler).
+		Methods(http.MethodOptions, http.MethodHead)
 
 	return router
 }
