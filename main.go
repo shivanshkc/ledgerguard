@@ -7,6 +7,7 @@ import (
 
 	"github.com/shivanshkc/ledgerguard/src/configs"
 	"github.com/shivanshkc/ledgerguard/src/logger"
+	"github.com/shivanshkc/ledgerguard/src/middlewares"
 
 	"github.com/gorilla/mux"
 )
@@ -28,6 +29,13 @@ func main() {
 // handler is responsible to handle all incoming HTTP traffic.
 func handler() http.Handler {
 	router := mux.NewRouter()
+
+	// Attaching global middlewares.
+	// Note that the order here is VERY important.
+	router.Use(middlewares.Recovery)
+	router.Use(middlewares.RequestContext)
+	router.Use(middlewares.AccessLogger)
+	router.Use(middlewares.CORS)
 
 	// Client-facing authentication API.
 	router.HandleFunc("/api/auth/{provider_id}", nil).Methods(http.MethodOptions, http.MethodGet)
