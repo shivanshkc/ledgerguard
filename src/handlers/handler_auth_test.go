@@ -18,6 +18,7 @@ import (
 
 // nolint:funlen // Function is long due to table driven tests.
 func TestAuthHandler(t *testing.T) {
+	// Commonly used params.
 	validProviderID := "google"
 	stateRedirectURI := "https://my-site.com"
 	providerRedirectURI := "https://provider-site.com"
@@ -26,8 +27,9 @@ func TestAuthHandler(t *testing.T) {
 	errPNF := errutils.ProviderNotFound()
 	errBad := errutils.BadRequest()
 	errInt := errutils.InternalServerError()
+	errIRU := handlers.ErrInvalidRedirectURI
 
-	// Error that's returned by the mock provider in one of the cases.
+	// Error that will be returned by the mock provider in one of the cases.
 	errProvider := errors.New("some error occurred")
 
 	tests := []struct {
@@ -72,7 +74,7 @@ func TestAuthHandler(t *testing.T) {
 			provider:           &mockProvider{providerID: validProviderID, redirectURI: providerRedirectURI},
 			expectedStatus:     http.StatusBadRequest,
 			expectedHeaders:    http.Header{},
-			expectedBody:       map[string]interface{}{"code": errBad.Code, "reason": handlers.ErrState.Error()},
+			expectedBody:       map[string]interface{}{"code": errBad.Code, "reason": errIRU.Error()},
 		},
 		// Provider error case.
 		{
