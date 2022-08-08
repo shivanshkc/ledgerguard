@@ -1,21 +1,18 @@
 package handlers
 
 import (
-	"fmt"
+	"errors"
 	"net/url"
 )
 
-// checkProviderID checks if the specified provider ID is valid.
-func checkProviderID(providerID string) error {
-	// We don't need any validations here.
-	return nil
-}
+// ErrState is the error returned when the state redirect-uri is invalid.
+var ErrState = errors.New("invalid redirect uri")
 
-// checkRedirectURI checks if the specified redirect URI is valid.
-func checkRedirectURI(uri string) error {
+// checkState checks if the specified redirect URI is valid.
+func checkState(uri string) error {
 	// Parsing the URI to check if it's valid.
 	if _, err := url.ParseRequestURI(uri); err != nil {
-		return fmt.Errorf("invalid redirect uri: %w", err)
+		return ErrState
 	}
 
 	return nil

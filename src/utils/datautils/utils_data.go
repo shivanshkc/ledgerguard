@@ -1,6 +1,7 @@
 package datautils
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -16,6 +17,8 @@ func AnyToBytes(input interface{}) ([]byte, error) {
 		return asserted, nil
 	case string:
 		return []byte(asserted), nil
+	case *bytes.Buffer:
+		return asserted.Bytes(), nil
 	case io.Reader:
 		// Reading all the data.
 		inputBytes, err := ioutil.ReadAll(asserted)
