@@ -10,8 +10,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Providers
+var (
+	providerGoogle = oauth.NewProviderGoogle()
+	// More provider implementations can be added here.
+)
+
 // ProviderMap maps the provider ID to the actual provider object.
-var ProviderMap = map[string]oauth.Provider{}
+var ProviderMap = map[string]oauth.Provider{
+	providerGoogle.ID(): providerGoogle,
+	// More provider implementations can be added here.
+}
 
 // AuthHandler is the HTTP handler for the authentication API.
 func AuthHandler(writer http.ResponseWriter, req *http.Request) {

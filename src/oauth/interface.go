@@ -18,3 +18,8 @@ type Provider interface {
 	// GetUserInfo provides the user's info from the identity token.
 	GetUserInfo(ctx context.Context, identityToken string) (*models.OAuthUser, error)
 }
+
+// NewProviderGoogle provides a new instance of the Google OAuth provider.
+func NewProviderGoogle() Provider {
+	return &providerGoogle{}
+}
